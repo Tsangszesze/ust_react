@@ -27,7 +27,8 @@ class CommentForm extends Component {
     }
 
     handleSubmit(values) {
-        alert('Current State is: ' + JSON.stringify(values));
+        this.toggleCommentForm();
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
@@ -100,7 +101,7 @@ class CommentForm extends Component {
                             <Row className="form-group">
                                 <Col>
                                     <Button type="submit" color="primary">
-                                    Submit
+                                        Submit
                                     </Button>
                                 </Col>
                             </Row>
@@ -126,7 +127,7 @@ function RenderDish({ dish }) {
     )
 }
 
-function RenderComments({ comments }) {
+function RenderComments({comments, addComment, dishId}) {
     return (
         <React.Fragment>
             <ul className='unstyled'>
@@ -141,7 +142,7 @@ function RenderComments({ comments }) {
                     )
                 })}
             </ul>
-            <CommentForm />
+            <CommentForm dishId={dishId} addComment={addComment} />
         </React.Fragment>
     )
 }
@@ -164,7 +165,10 @@ const DishDetail = (props) => {
                     <RenderDish dish={props.dish} />
                 </div>
                 <div className="col-12 col-md-5 m-1">
-                    <RenderComments comments={props.comments} />
+                    <RenderComments comments={props.comments}
+                        addComment={props.addComment}
+                        dishId={props.dish.id}
+                    />
                 </div>
             </div>
         </div>
